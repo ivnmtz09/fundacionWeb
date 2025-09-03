@@ -1,0 +1,46 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build output
+dist/
+build/
+out/
+coverage/
+
+# VSCode
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Misc
+*.local
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Entornos virtuales
+venv/
+.env
+.env.*
+
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+# Archivos de Node.js (cuando montes Angular frontend)
+node_modules/
+dist/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
