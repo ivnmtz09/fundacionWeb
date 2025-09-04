@@ -12,7 +12,7 @@ class RoleSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ("location","bio","interests","avatar")
+        fields = ("location","bio","interests","avatar", "phone_number", "address")
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)

@@ -152,20 +152,59 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'es-co'
-
 TIME_ZONE = 'America/Bogota'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Fundación Guajira en Acción",
+    "site_header": "Fundación Guajira en Acción",
+    "site_brand": "FGA Admin",
+    "welcome_sign": "Bienvenido/a al panel administrativo",
+    "copyright": "© 2025 Fundación Guajira en Acción",
+    "search_model": ["users.User", "foundation.Post", "foundation.Document"],
+    "topmenu_links": [
+        {"name": "Inicio", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"app": "users"},
+        {"app": "foundation"},
+    ],
+    "usermenu_links": [
+        {"name": "Soporte", "url": "mailto:soporte@guajiraenaccion.org", "icon": "fas fa-envelope"},
+    ],
+    "icons": {
+        "users.User": "fas fa-user",
+        "users.Role": "fas fa-user-shield",
+        "users.Resource": "fas fa-cubes",
+        "users.ResourceRole": "fas fa-key",
+        "foundation.Post": "fas fa-newspaper",
+        "foundation.Document": "fas fa-file-alt",
+        "foundation.Notification": "fas fa-bell",
+    },
+    "show_ui_builder": True,
+    "navigation_expanded": True,
+    "related_modal_active": True,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+    "dark_mode_theme": None,
+    "navbar": "navbar-success navbar-dark",
+    "sidebar": "sidebar-dark-primary",
+    "brand_colour": "navbar-dark bg-primary",
+    "brand_color": "bg-danger",
+    "accent": "accent-warning",
+    "navbar_small_text": False,
+    "footer_small_text": True,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}
