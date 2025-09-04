@@ -36,7 +36,6 @@ __pycache__/
 *.pyo
 *.pyd
 
-
 # Archivos de Node.js (cuando montes Angular frontend)
 node_modules/
 dist/
@@ -44,3 +43,8 @@ dist/
 # Archivos del sistema
 .DS_Store
 Thumbs.db
+
+# Django
+staticfiles/        # Archivos recolectados por collectstatic
+media/              # Archivos subidos por usuarios
+db.sqlite3          # BD local (si usas SQLite en dev)
