@@ -1,0 +1,40 @@
+# Normalizar saltos de línea
+* text=auto eol=lf
+
+# Archivos Python -> siempre LF
+*.py text eol=lf
+
+# Archivos de configuración
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.cfg text eol=lf
+
+# Archivos frontend
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+
+# Markdown y docs
+*.md text eol=lf
+*.rst text eol=lf
+
+# Archivos binarios (no modificar saltos de línea)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.mp4 binary
+*.mp3 binary
