@@ -5,6 +5,7 @@ from .models import Post, Notification, Document
 from .serializers import (
     PostListSerializer, PostDetailSerializer, NotificationSerializer, DocumentSerializer
 )
+from .permissions import PostPermissions
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by("-created_at")

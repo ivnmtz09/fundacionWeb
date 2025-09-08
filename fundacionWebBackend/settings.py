@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'apps.users',
     'apps.foundation',
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 SITE_ID = 1
@@ -79,6 +80,11 @@ TEMPLATES = [{
 
 WSGI_APPLICATION = 'fundacionWebBackend.wsgi.application'
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # MySQL database
 
@@ -106,10 +112,10 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Fundación Guajira en Acción API',
-    'DESCRIPTION': 'API pública y privada de la fundación',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "Fundación Guajira en Acción API",
+    "DESCRIPTION": "Documentación de la API para Fundación Guajira en Acción",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -127,7 +133,14 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "Fundación Guajira en Acción <no-reply@guajiraenaccion.org>"
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_UNIQUE_EMAIL = True
+
 ACCOUNT_LOGIN_METHODS = {"username", "email"}
 ACCOUNT_SIGNUP_FIELDS = ["username*", "email*", "password1*", "password2*"]
 LOGIN_REDIRECT_URL = '/'

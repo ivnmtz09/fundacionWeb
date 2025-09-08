@@ -48,3 +48,6 @@ Thumbs.db
 staticfiles/        # Archivos recolectados por collectstatic
 media/              # Archivos subidos por usuarios
 db.sqlite3          # BD local (si usas SQLite en dev)
+
+# Archivos estáticos generados
+staticfiles/

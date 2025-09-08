@@ -1,0 +1,42 @@
+<div class="auth-container">
+  <h2>Registro</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="first_name">Nombre</label>
+      <input id="first_name" formControlName="first_name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="last_name">Apellido</label>
+      <input id="last_name" formControlName="last_name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Correo</label>
+      <input id="email" type="email" formControlName="email" required />
+    </div>
+
+    <div class="form-group">
+      <label for="password1">Contraseña</label>
+      <input id="password1" type="password" formControlName="password1" required />
+    </div>
+
+    <div class="form-group">
+      <label for="password2">Repite la contraseña</label>
+      <input id="password2" type="password" formControlName="password2" required />
+      <small *ngIf="passwordsDontMatch">
+        Las contraseñas no coinciden.
+      </small>
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid || passwordsDontMatch">
+      Registrarse
+    </button>
+  </form>
+
+  <p class="switch-link">
+    ¿Ya tienes cuenta?
+    <a routerLink="/login">Inicia sesión</a>
+  </p>
+</div>

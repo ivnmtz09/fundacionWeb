@@ -1,58 +1,51 @@
+import logging
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 from .models import Resource, ResourceRole
+import re
 
 
 class HasResourcePermission(BasePermission):
     """
     Valida permisos según el rol del usuario y el recurso al que accede.
-    Soporta resources con placeholder '<id>' (ej: '/api/foundation/posts/<id>/')
+    Soporta resources con placeholders dinámicos como <id>, <slug>, etc.
     """
 
-    def _match_resource(self, path, method):
+    def _normalize_path(self, path: str) -> str:
         """
-        Busca un Resource que coincida exactamente con la path y method,
-        o que tenga '<id>' y cuyo prefijo coincida con el inicio de la path.
-        Retorna el primer Resource encontrado o None.
+        Normaliza un path dinámico:
+        - Reemplaza segmentos numéricos por <id>
+        - Reemplaza segmentos tipo slug (palabras con guiones) por <slug>
         """
-        # buscar coincidencia exacta
-        res = Resource.objects.filter(path_backend=path, http_method=method).first()
-        if res:
-            return res
-
-        # buscar resources con placeholder <id>
-        candidates = Resource.objects.filter(http_method=method, path_backend__contains="<id>")
-        for c in candidates:
-            prefix = c.path_backend.replace("<id>", "")
-            if path.startswith(prefix):
-                return c
-
-        # buscar resources con path_backend vacío o generic (opcional)
-        return None
+        segments = path.strip("/").split("/")
+        normalized = []
+        for seg in segments:
+            if re.match(r"^\d+$", seg):  # solo números
+                normalized.append("<id>")
+            elif re.match(r"^[a-zA-Z0-9_-]+$", seg) and seg != "api":  # slug básico
+                normalized.append(seg)
+            else:
+                normalized.append(seg)
+        return "/" + "/".join(normalized) + "/"
 
     def has_permission(self, request, view):
         user = request.user
+        method = request.method
+        normalized_path = self._normalize_path(request.path)
 
-        # permitir acceso a vistas públicas (no autenticadas) si método es seguro
-        if not user.is_authenticated and request.method in SAFE_METHODS:
+        # Permitir GET/HEAD/OPTIONS públicos
+        if not user.is_authenticated and method in SAFE_METHODS:
             return True
-
         if not user.is_authenticated:
             return False
 
-        path = request.path
-        method = request.method
-
-        resource = self._match_resource(path, method)
+        # buscar coincidencia exacta
+        resource = Resource.objects.filter(path_backend=normalized_path, http_method=method).first()
         if not resource:
-            # Si no existe resource definido, denegamos por seguridad.
-            return False
+            logging.warning(f"Resource no encontrado: {normalized_path} [{method}]")
+            return False  # seguridad: si no hay resource definido, denegar
 
-        # buscar permiso asignado al rol del usuario
-        try:
-            res_role = ResourceRole.objects.filter(resource=resource, role=user.role).first()
-        except ResourceRole.DoesNotExist:
-            res_role = None
-
+        # buscar permisos para el rol
+        res_role = ResourceRole.objects.filter(role=user.role, resource=resource).first()
         if not res_role:
             return False
 
@@ -66,3 +59,4 @@ class HasResourcePermission(BasePermission):
             return True
 
         return False
+

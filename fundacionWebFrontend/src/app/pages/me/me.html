@@ -1,0 +1,13 @@
+<div class="profile-container" *ngIf="user">
+  <h2>Mi Perfil</h2>
+
+  <div class="profile-info">
+    <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong>Correo:</strong> {{ user.email }}</p>
+    <p><strong>Ubicación:</strong> {{ user.profile?.location || 'No definida' }}</p>
+    <p><strong>Teléfono:</strong> {{ user.profile?.phone_number || 'No definido' }}</p>
+    <p><strong>Biografía:</strong> {{ user.profile?.bio || 'Sin descripción' }}</p>
+  </div>
+
+  <button (click)="logout()">Cerrar sesión</button>
+</div>
