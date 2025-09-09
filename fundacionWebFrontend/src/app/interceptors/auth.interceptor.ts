@@ -1,29 +1,61 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent
-} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {}
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.auth.getToken();
-
-    if (token) {
-      const cloned = req.clone({
-        setHeaders: {
-          Authorization: `Token ${token}` // 👈 Django REST Knox/DRF TokenAuth
-        }
-      });
-      return next.handle(cloned);
-    }
-
-    return next.handle(req);
+  // No agregar token a requests de auth
+  if (isAuthRequest(req.url)) {
+    return next(req);
   }
+
+  const token = authService.getAccessToken();
+  
+  if (token) {
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      // Si es un error 401 y tenemos refresh token, intentar renovar
+      if (error.status === 401 && !isAuthRequest(req.url)) {
+        const refreshToken = authService.getRefreshToken();
+        
+        if (refreshToken) {
+          return authService.refreshToken().pipe(
+            switchMap((tokenResponse: any) => {
+              // Reintentar la petición original con el nuevo token
+              const newReq = req.clone({
+                setHeaders: {
+                  Authorization: `Bearer ${tokenResponse.access}`
+                }
+              });
+              return next(newReq);
+            }),
+            catchError((refreshError) => {
+              authService.logout().subscribe();
+              return throwError(() => refreshError);
+            })
+          );
+        } else {
+          authService.logout().subscribe();
+        }
+      }
+      
+      return throwError(() => error);
+    })
+  );
+};
+
+function isAuthRequest(url: string): boolean {
+  return url.includes('/auth/login/') || 
+         url.includes('/auth/register/') || 
+         url.includes('/auth/refresh/') ||
+         url.includes('/auth/logout/');
 }
