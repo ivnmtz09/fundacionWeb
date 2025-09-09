@@ -4,15 +4,29 @@ import { RegisterComponent } from './pages/register/register';
 import { MeComponent } from './pages/me/me';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized';
 import { AuthGuard, GuestGuard } from './guards/auth.guard';
+import { HomeComponent } from './pages/home/home';
+import { NavbarComponent } from './components/navbar/navbar';
 
 export const routes: Routes = [
   // Redirigir la raíz hacia me si está autenticado, sino a login
   { 
     path: '', 
-    redirectTo: 'me', 
+    redirectTo: 'home', 
     pathMatch: 'full' 
   },
   
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [GuestGuard]
+  },
+
+  {
+    path: 'navbar',
+    component: NavbarComponent,
+    canActivate: [AuthGuard]
+  },
+
   // Rutas públicas (solo para usuarios no autenticados)
   { 
     path: 'login', 
@@ -41,6 +55,6 @@ export const routes: Routes = [
   // Capturar todas las rutas no definidas
   { 
     path: '**', 
-    redirectTo: 'login' 
+    redirectTo: 'home' 
   }
 ];

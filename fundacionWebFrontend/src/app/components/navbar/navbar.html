@@ -1,0 +1,29 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <img src="/assets/images/logo-fundacion.png" alt="Fundación Guajira en Acción" class="logo">
+      <span class="brand-text">Fundación Guajira en Acción</span>
+    </div>
+    
+    <div class="nav-menu" [class.active]="isMenuOpen">
+      <a routerLink="/home" routerLinkActive="active" class="nav-link">Home</a>
+      <a routerLink="/about" routerLinkActive="active" class="nav-link">Sobre Nosotros</a>
+      <a routerLink="/contact" routerLinkActive="active" class="nav-link">Contacto</a>
+      
+      <div class="nav-auth" *ngIf="!isLoggedIn">
+        <a routerLink="/login" routerLinkActive="active" class="nav-link login">Iniciar Sesión</a>
+        <a routerLink="/register" routerLinkActive="active" class="nav-link register">Registrarse</a>
+      </div>
+      
+      <div class="nav-user" *ngIf="isLoggedIn">
+        <a routerLink="/me" routerLinkActive="active" class="nav-link profile">Mi Perfil</a>
+      </div>
+    </div>
+    
+    <button class="nav-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>

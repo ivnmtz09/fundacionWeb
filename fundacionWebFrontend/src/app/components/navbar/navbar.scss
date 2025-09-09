@@ -1,0 +1,186 @@
+// Paleta institucional
+$verde: #7CB342;
+$azul: #00BCD4;
+$azul-oscuro: #2196F3;
+$amarillo: #FFEB3B;
+$rojo: #F44336;
+$gris: #F8F9FA;
+$gris-oscuro: #333;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, $verde 0%, $azul 60%, $azul-oscuro 100%);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid $azul;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba($azul, 0.08);
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+  
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    .logo {
+      width: 44px;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba($azul, 0.12);
+    }
+    
+    .brand-text {
+      color: $azul-oscuro;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+  }
+  
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    
+    @media (max-width: 768px) {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: white;
+      flex-direction: column;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba($azul, 0.12);
+      transform: translateY(-100%);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      
+      &.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    
+    .nav-link {
+      color: $gris-oscuro;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 8px;
+      transition: all 0.3s;
+      
+      &:hover {
+        color: $azul-oscuro;
+        background: rgba($azul, 0.12);
+      }
+      
+      &.active {
+        color: $azul-oscuro;
+        background: rgba($azul, 0.18);
+      }
+      
+      &.login {
+        color: $verde;
+        border: 1px solid $verde;
+        
+        &:hover {
+          background: $verde;
+          color: white;
+        }
+      }
+      
+      &.register {
+        background: linear-gradient(135deg, $verde, $azul);
+        color: white;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba($verde, 0.18);
+        }
+      }
+      
+      &.profile {
+        color: $azul-oscuro;
+        border: 1px solid $azul-oscuro;
+        
+        &:hover {
+          background: $azul-oscuro;
+          color: white;
+        }
+      }
+    }
+    
+    .nav-auth, .nav-user {
+      display: flex;
+      gap: 15px;
+      
+      @media (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 20px;
+        
+        .nav-link {
+          text-align: center;
+        }
+      }
+    }
+  }
+  
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    
+    @media (max-width: 768px) {
+      display: flex;
+    }
+    
+    span {
+      width: 28px;
+      height: 3px;
+      background: $azul-oscuro;
+      margin: 3px 0;
+      transition: all 0.3s;
+      border-radius: 2px;
+    }
+    
+    &.active {
+      span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+      
+      span:nth-child(2) {
+        opacity: 0;
+      }
+      
+      span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+    }
+  }
+}
+
+body {
+  padding-top: 70px;
+  background: $gris;
+}
