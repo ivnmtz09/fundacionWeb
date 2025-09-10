@@ -1,293 +1,61 @@
-// Paleta institucional
-$verde: #7CB342;
-$azul: #00BCD4;
-$azul-oscuro: #2196F3;
-$amarillo: #FFEB3B;
-$rojo: #F44336;
-$gris: #F8F9FA;
-$gris-oscuro: #333;
+@use "sass:color";
 
-.profile-container {
-  min-height: 100vh;
-  background: linear-gradient(135deg, $gris 0%, $azul 50%, $verde 100%);
-  padding: 20px;
-}
+.me-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-.profile-header {
-  background: linear-gradient(135deg, $verde, $azul);
-  border-radius: 20px;
-  padding: 32px;
-  margin-bottom: 32px;
-  color: white;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  
-  .avatar-section {
+  h2 {
+    margin-bottom: 1rem;
+    color: color.adjust(#2e7d32, $lightness: -5%);
+  }
+
+  .profile-card {
     display: flex;
-    align-items: center;
-    gap: 18px;
-    
+    align-items: flex-start;
+    gap: 1.5rem;
+
     .avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: $azul-oscuro;
-      color: white;
-      font-size: 2rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .avatar-img {
-      width: 80px;
-      height: 80px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      box-shadow: 0 4px 16px rgba($azul-oscuro, 0.15);
+      background: #eee;
+      border: 3px solid #2e7d32;
     }
-    
-    .user-info {
-      h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 4px;
-      }
-      
-      .username {
-        color: $amarillo;
-        font-size: 1rem;
-        font-weight: 600;
-      }
-      
-      .role-badge {
-        display: inline-block;
-        margin-top: 4px;
-        padding: 4px 12px;
-        border-radius: 12px;
+
+    .info {
+      flex: 1;
+
+      p {
+        margin: 0.4rem 0;
         font-size: 0.95rem;
-        font-weight: 600;
-        background: $gris;
-        color: $azul-oscuro;
-        
-        &.role-admin { background: $rojo; color: white; }
-        &.role-editor { background: $azul-oscuro; color: white; }
-        &.role-colaborador { background: $amarillo; color: $gris-oscuro; }
-        &.role-voluntario { background: $verde; color: white; }
-        &.role-visitante { background: $gris; color: $azul-oscuro; }
-      }
-    }
-  }
-  
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    
-    .btn-danger {
-      background: $rojo;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 24px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      
-      &:hover:not(:disabled) {
-        background: darken($rojo, 10%);
-        transform: translateY(-2px);
-      }
-      
-      &.spinner-small {
-        margin-right: 8px;
-      }
-    }
-  }
-}
 
-.profile-content {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.profile-details {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  padding: 32px;
-  
-  .details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 32px;
-  }
-  
-  .detail-section {
-    h3 {
-      color: $verde;
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .detail-items {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      
-      .detail-item {
-        label {
-          color: $azul-oscuro;
-          font-size: 0.95rem;
-          font-weight: 600;
-        }
-        
-        span {
-          color: $gris-oscuro;
-          font-size: 1rem;
+        strong {
+          color: #1565c0;
         }
       }
-    }
-    
-    .bio-content, .interests-content {
-      background: $gris;
-      border-radius: 8px;
-      padding: 12px;
-      color: $gris-oscuro;
-      font-size: 1rem;
-      margin-top: 8px;
-    }
-  }
-}
 
-.profile-footer {
-  text-align: center;
-  margin-top: 24px;
-  
-  .btn-secondary {
-    background: $gris;
-    color: $azul-oscuro;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: not-allowed;
-    opacity: 0.7;
-    
-    .coming-soon {
-      font-size: 0.85rem;
-      background: $amarillo;
-      color: $gris-oscuro;
-      padding: 2px 8px;
-      border-radius: 6px;
-      margin-left: 8px;
+      .role {
+        margin-top: 0.7rem;
+        padding: 0.4rem 1rem;
+        display: inline-block;
+        border-radius: 6px;
+        background: #fbc02d;
+        color: #212121;
+        font-weight: bold;
+        font-size: 0.85rem;
+      }
     }
   }
-}
 
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  
-  .loading-spinner {
-    margin-bottom: 12px;
-    
-    svg {
-      animation: spin 1s linear infinite;
-    }
-  }
-  
-  p {
-    color: $azul-oscuro;
-    font-weight: 600;
-  }
-}
-
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
-
-.error-container {
-  background: rgba($rojo, 0.08);
-  color: $rojo;
-  border-radius: 12px;
-  padding: 18px 24px;
-  margin-bottom: 12px;
-  text-align: center;
-  
-  .error-icon {
-    margin-bottom: 8px;
-    
-    svg {
-      display: block;
-      margin: 0 auto;
-    }
-  }
-  
-  h3 {
-    color: $rojo;
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  
-  p {
-    color: $gris-oscuro;
-    font-size: 1rem;
-    margin-bottom: 8px;
-  }
-  
-  .btn-primary {
-    background: $azul-oscuro;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    
-    &:hover {
-      background: $azul;
-      transform: translateY(-2px);
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .profile-header {
-    flex-direction: column;
+  .loading {
     text-align: center;
-    gap: 12px;
-  }
-  
-  .profile-content {
-    padding: 0 4px;
-  }
-  
-  .profile-details {
-    padding: 16px;
-    
-    .details-grid {
-      grid-template-columns: 1fr;
-      gap: 18px;
-    }
+    font-size: 1.1rem;
+    color: #1565c0;
+    padding: 2rem;
   }
 }

@@ -1,0 +1,38 @@
+@use "sass:color";
+
+// Paleta principal de la Fundación (ajústala según el Portafolio)
+$primary-color: #2e7d32; // verde institucional
+$secondary-color: #1565c0; // azul secundario
+$accent-color: #fbc02d; // amarillo acento
+$light-color: #f9f9f9;
+$dark-color: #212121;
+
+body {
+  margin: 0;
+  font-family: "Roboto", Arial, sans-serif;
+  background-color: $light-color;
+  color: $dark-color;
+}
+
+a {
+  text-decoration: none;
+  color: $secondary-color;
+
+  &:hover {
+    color: color.adjust($secondary-color, $lightness: -10%);
+  }
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: color.adjust($primary-color, $lightness: -10%);
+  }
+}

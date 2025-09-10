@@ -41,6 +41,16 @@ export interface User {
     phone_number: string;
     address: string;
   };
+  date_joined: string;
+  last_login: string | null;  
+  is_active: boolean;
+  is_staff: boolean;
+  is_superuser: boolean;
+  avatar?: string | null;
+  bio?: string | null;
+  interests?: string | null;
+  phone_number?: string | null;
+  address?: string | null;
 }
 
 @Injectable({
@@ -125,6 +135,12 @@ export class AuthService {
       tap((user: User) => {
         this.currentUserSubject.next(user);
       }),
+      catchError(this.handleError)
+    );
+  }
+
+  getProfile(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me/`).pipe(
       catchError(this.handleError)
     );
   }

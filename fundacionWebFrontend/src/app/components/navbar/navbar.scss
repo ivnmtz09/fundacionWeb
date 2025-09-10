@@ -6,45 +6,76 @@ $amarillo: #FFEB3B;
 $rojo: #F44336;
 $gris: #F8F9FA;
 $gris-oscuro: #333;
+$blanco: #FFFFFF;
 
+// Navbar principal
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(90deg, $verde 0%, $azul 60%, $azul-oscuro 100%);
-  backdrop-filter: blur(10px);
-  border-bottom: 2px solid $azul;
+  background: linear-gradient(135deg, $blanco 0%, rgba($azul, 0.05) 100%);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba($azul, 0.1);
   z-index: 1000;
-  box-shadow: 0 4px 16px rgba($azul, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
   
   .nav-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 70px;
+    height: 80px;
+    position: relative;
   }
   
+  // Brand section with logo
   .nav-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
     
-    .logo {
-      width: 44px;
-      height: auto;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba($azul, 0.12);
+    &:hover {
+      transform: scale(1.02);
     }
     
-    .brand-text {
-      color: $azul-oscuro;
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 1px;
+    .logo {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba($verde, 0.2);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        box-shadow: 0 6px 20px rgba($verde, 0.3);
+        transform: rotate(2deg);
+      }
+    }
+    
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      
+      .brand-text {
+        color: $verde;
+        font-size: 1.4rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+      
+      .brand-subtitle {
+        color: $azul-oscuro;
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-top: -2px;
+      }
       
       @media (max-width: 768px) {
         display: none;
@@ -52,24 +83,27 @@ $gris-oscuro: #333;
     }
   }
   
+  // Main navigation menu
   .nav-menu {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 8px;
     
-    @media (max-width: 768px) {
+    @media (max-width: 968px) {
       position: fixed;
-      top: 70px;
+      top: 80px;
       left: 0;
       right: 0;
-      background: white;
+      background: $blanco;
       flex-direction: column;
-      padding: 20px;
-      box-shadow: 0 4px 20px rgba($azul, 0.12);
+      padding: 32px 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
       transform: translateY(-100%);
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
       
       &.active {
         transform: translateY(0);
@@ -82,105 +116,361 @@ $gris-oscuro: #333;
       color: $gris-oscuro;
       text-decoration: none;
       font-weight: 600;
-      padding: 8px 18px;
-      border-radius: 8px;
-      transition: all 0.3s;
+      font-size: 0.95rem;
+      padding: 12px 20px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      
+      svg {
+        opacity: 0.7;
+        transition: all 0.3s ease;
+      }
       
       &:hover {
-        color: $azul-oscuro;
-        background: rgba($azul, 0.12);
+        color: $verde;
+        background: rgba($verde, 0.08);
+        transform: translateY(-2px);
+        
+        svg {
+          opacity: 1;
+          transform: scale(1.1);
+        }
       }
       
       &.active {
         color: $azul-oscuro;
-        background: rgba($azul, 0.18);
-      }
-      
-      &.login {
-        color: $verde;
-        border: 1px solid $verde;
+        background: linear-gradient(135deg, rgba($azul, 0.1), rgba($verde, 0.1));
         
-        &:hover {
-          background: $verde;
-          color: white;
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 30px;
+          height: 3px;
+          background: linear-gradient(90deg, $azul, $verde);
+          border-radius: 2px;
+        }
+        
+        svg {
+          opacity: 1;
+          color: $azul-oscuro;
         }
       }
       
-      &.register {
-        background: linear-gradient(135deg, $verde, $azul);
-        color: white;
-        
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba($verde, 0.18);
-        }
-      }
-      
-      &.profile {
-        color: $azul-oscuro;
-        border: 1px solid $azul-oscuro;
-        
-        &:hover {
-          background: $azul-oscuro;
-          color: white;
-        }
-      }
-    }
-    
-    .nav-auth, .nav-user {
-      display: flex;
-      gap: 15px;
-      
-      @media (max-width: 768px) {
-        flex-direction: column;
+      @media (max-width: 968px) {
         width: 100%;
-        margin-top: 20px;
+        justify-content: flex-start;
+        padding: 16px 20px;
+        font-size: 1.1rem;
         
-        .nav-link {
-          text-align: center;
+        &.active::after {
+          display: none;
         }
       }
     }
   }
   
+  // Authentication section
+  .nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    @media (max-width: 968px) {
+      position: absolute;
+      top: 100%;
+      left: 24px;
+      right: 24px;
+      background: rgba($gris, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 0 0 16px 16px;
+      transform: translateY(-100%);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      .navbar.menu-open & {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    
+    .guest-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      
+      @media (max-width: 968px) {
+        flex-direction: column;
+        width: 100%;
+        gap: 16px;
+      }
+      
+      .auth-link {
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        
+        &.login-btn {
+          color: $azul-oscuro;
+          border: 2px solid $azul-oscuro;
+          
+          &:hover {
+            background: $azul-oscuro;
+            color: $blanco;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba($azul-oscuro, 0.3);
+          }
+        }
+        
+        &.register-btn {
+          background: linear-gradient(135deg, $verde, $azul);
+          color: $blanco;
+          border: 2px solid transparent;
+          
+          &:hover {
+            background: linear-gradient(135deg, $azul, $verde);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba($verde, 0.3);
+          }
+        }
+        
+        @media (max-width: 968px) {
+          width: 100%;
+          justify-content: center;
+          padding: 14px 24px;
+          font-size: 1rem;
+        }
+      }
+    }
+    
+    // User dropdown menu
+    .user-actions {
+      position: relative;
+      
+      .user-dropdown {
+        position: relative;
+        
+        .user-trigger {
+          background: rgba($verde, 0.1);
+          border: 2px solid transparent;
+          border-radius: 25px;
+          padding: 8px 16px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: rgba($verde, 0.15);
+            border-color: $verde;
+            transform: translateY(-1px);
+          }
+          
+          .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, $verde, $azul);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $blanco;
+          }
+          
+          .user-name {
+            color: $gris-oscuro;
+            font-weight: 600;
+            font-size: 0.9rem;
+          }
+          
+          .dropdown-arrow {
+            color: $azul-oscuro;
+            transition: transform 0.3s ease;
+          }
+          
+          .user-dropdown.active & .dropdown-arrow {
+            transform: rotate(180deg);
+          }
+        }
+        
+        .user-menu {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background: $blanco;
+          border-radius: 12px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+          padding: 8px;
+          min-width: 180px;
+          z-index: 1000;
+          transform: translateY(10px);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+          
+          .user-dropdown.active & {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+          }
+          
+          .user-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: $gris-oscuro;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            
+            &:hover {
+              background: rgba($azul, 0.08);
+              color: $azul-oscuro;
+            }
+            
+            &.logout-btn {
+              color: $rojo;
+              
+              &:hover {
+                background: rgba($rojo, 0.08);
+                color: $rojo;
+              }
+            }
+            
+            svg {
+              opacity: 0.7;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Mobile menu toggle
   .nav-toggle {
     display: none;
     flex-direction: column;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
     
-    @media (max-width: 768px) {
+    @media (max-width: 968px) {
       display: flex;
     }
     
-    span {
-      width: 28px;
+    &:hover {
+      background: rgba($verde, 0.1);
+    }
+    
+    .hamburger-line {
+      width: 24px;
       height: 3px;
       background: $azul-oscuro;
-      margin: 3px 0;
-      transition: all 0.3s;
+      margin: 2px 0;
+      transition: all 0.3s ease;
       border-radius: 2px;
     }
     
     &.active {
-      span:nth-child(1) {
+      .hamburger-line:nth-child(1) {
         transform: rotate(45deg) translate(6px, 6px);
       }
       
-      span:nth-child(2) {
+      .hamburger-line:nth-child(2) {
         opacity: 0;
       }
       
-      span:nth-child(3) {
+      .hamburger-line:nth-child(3) {
         transform: rotate(-45deg) translate(6px, -6px);
+      }
+    }
+  }
+  
+  // Mobile overlay
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    
+    @media (max-width: 968px) {
+      display: block;
+      
+      &.active {
+        opacity: 1;
+        visibility: visible;
       }
     }
   }
 }
 
+// Global body adjustment
 body {
-  padding-top: 70px;
-  background: $gris;
+  padding-top: 80px;
+}
+
+// Scroll behavior enhancement
+.navbar {
+  &.scrolled {
+    background: rgba($blanco, 0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    
+    .nav-brand .logo {
+      transform: scale(0.9);
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
