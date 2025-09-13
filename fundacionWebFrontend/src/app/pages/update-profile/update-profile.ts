@@ -22,10 +22,10 @@ export class UpdateProfile {
       this.profileForm = this.fb.group({
         first_name: [user.first_name || '', Validators.required],
         last_name: [user.last_name || '', Validators.required],
-        bio: [user.bio || ''],
-        interests: [user.interests || ''],
-        phone_number: [user.phone_number || ''],
-        address: [user.address || '']
+        bio: [user.profile?.bio || ''],
+        interests: [user.profile?.interests || ''],
+        phone_number: [user.profile?.phone_number || ''],
+        address: [user.profile?.address || '']
       });
     });
   }

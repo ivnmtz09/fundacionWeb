@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-unauthorized',
@@ -10,23 +9,4 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './unauthorized.html',
   styleUrls: ['./unauthorized.scss']
 })
-export class UnauthorizedComponent {
-  
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) {}
-
-  goBack(): void {
-    window.history.back();
-  }
-
-  goHome(): void {
-    const user = this.authService.getCurrentUser();
-    if (user) {
-      this.router.navigate(['/me']);
-    } else {
-      this.router.navigate(['/login']);
-    }
-  }
-}
+export class UnauthorizedComponent {}

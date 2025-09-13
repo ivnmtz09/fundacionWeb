@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { AuthService, RegisterRequest } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -27,16 +27,17 @@ export class RegisterComponent implements OnDestroy {
     private authService: AuthService,
     private router: Router
   ) {
-    this.registerForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9_]+$/)]],
-      email: ['', [Validators.required, Validators.email]],
-      first_name: ['', [Validators.required, Validators.minLength(2)]],
-      last_name: ['', [Validators.required, Validators.minLength(2)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validators: this.passwordMatchValidator
-    });
+    this.registerForm = this.fb.group(
+      {
+        username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9_]+$/)]],
+        email: ['', [Validators.required, Validators.email]],
+        first_name: ['', [Validators.required, Validators.minLength(2)]],
+        last_name: ['', [Validators.required, Validators.minLength(2)]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', [Validators.required]]
+      },
+      { validators: this.passwordMatchValidator }
+    );
   }
 
   ngOnDestroy(): void {
@@ -47,19 +48,16 @@ export class RegisterComponent implements OnDestroy {
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
-    
     if (password && confirmPassword && password.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
     }
-    
     if (confirmPassword?.errors?.['passwordMismatch']) {
       delete confirmPassword.errors['passwordMismatch'];
       if (Object.keys(confirmPassword.errors).length === 0) {
         confirmPassword.setErrors(null);
       }
     }
-    
     return null;
   }
 
@@ -69,7 +67,7 @@ export class RegisterComponent implements OnDestroy {
       this.errorMessage = '';
       this.successMessage = '';
 
-      const registerData: RegisterRequest = {
+      const registerData = {
         username: this.registerForm.get('username')?.value,
         email: this.registerForm.get('email')?.value,
         first_name: this.registerForm.get('first_name')?.value,
@@ -80,22 +78,15 @@ export class RegisterComponent implements OnDestroy {
       this.authService.register(registerData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (response) => {
-            console.log('Registro exitoso:', response);
+          next: () => {
             this.successMessage = 'Registro exitoso. Redirigiendo al login...';
-            
-            setTimeout(() => {
-              this.router.navigate(['/login']);
-            }, 2000);
+            setTimeout(() => this.router.navigate(['/login']), 2000);
           },
           error: (error) => {
-            console.error('Error en registro:', error);
-            this.errorMessage = error.message;
+            this.errorMessage = error.error?.detail || 'Error en el registro';
             this.isLoading = false;
           },
-          complete: () => {
-            this.isLoading = false;
-          }
+          complete: () => (this.isLoading = false)
         });
     } else {
       this.markFormGroupTouched();
@@ -119,14 +110,9 @@ export class RegisterComponent implements OnDestroy {
 
   getFieldError(fieldName: string): string {
     const field = this.registerForm.get(fieldName);
-    
     if (field?.errors && field.touched) {
-      if (field.errors['required']) {
-        return `${this.getFieldLabel(fieldName)} es obligatorio`;
-      }
-      if (field.errors['email']) {
-        return 'Ingresa un email válido';
-      }
+      if (field.errors['required']) return `${this.getFieldLabel(fieldName)} es obligatorio`;
+      if (field.errors['email']) return 'Ingresa un email válido';
       if (field.errors['minlength']) {
         const minLength = field.errors['minlength'].requiredLength;
         return `${this.getFieldLabel(fieldName)} debe tener al menos ${minLength} caracteres`;
@@ -134,11 +120,8 @@ export class RegisterComponent implements OnDestroy {
       if (field.errors['pattern'] && fieldName === 'username') {
         return 'El usuario solo puede contener letras, números y guiones bajos';
       }
-      if (field.errors['passwordMismatch']) {
-        return 'Las contraseñas no coinciden';
-      }
+      if (field.errors['passwordMismatch']) return 'Las contraseñas no coinciden';
     }
-    
     return '';
   }
 
@@ -161,18 +144,14 @@ export class RegisterComponent implements OnDestroy {
 
   getPasswordStrength(): string {
     const password = this.registerForm.get('password')?.value || '';
-    
     if (password.length === 0) return '';
     if (password.length < 6) return 'weak';
     if (password.length < 8) return 'medium';
-    
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumbers = /\d/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    
     const criteriaCount = [hasUpperCase, hasLowerCase, hasNumbers, hasSpecialChar].filter(Boolean).length;
-    
     if (criteriaCount >= 3 && password.length >= 8) return 'strong';
     if (criteriaCount >= 2) return 'medium';
     return 'weak';

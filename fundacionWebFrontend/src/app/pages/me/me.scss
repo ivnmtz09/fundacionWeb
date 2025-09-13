@@ -1,61 +1,9 @@
-@use "sass:color";
-
-.me-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
-  h2 {
-    margin-bottom: 1rem;
-    color: color.adjust(#2e7d32, $lightness: -5%);
-  }
-
-  .profile-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #eee;
-      border: 3px solid #2e7d32;
-    }
-
-    .info {
-      flex: 1;
-
-      p {
-        margin: 0.4rem 0;
-        font-size: 0.95rem;
-
-        strong {
-          color: #1565c0;
-        }
-      }
-
-      .role {
-        margin-top: 0.7rem;
-        padding: 0.4rem 1rem;
-        display: inline-block;
-        border-radius: 6px;
-        background: #fbc02d;
-        color: #212121;
-        font-weight: bold;
-        font-size: 0.85rem;
-      }
-    }
-  }
-
-  .loading {
-    text-align: center;
-    font-size: 1.1rem;
-    color: #1565c0;
-    padding: 2rem;
-  }
+.me-page {
+  .profile-header { display:flex; align-items:center; gap:1rem; padding:1rem; }
+  .avatar { width:96px; height:96px; border-radius:50%; object-fit:cover; border:3px solid rgba(255,255,255,0.12); }
+  .role-badge { display:inline-block; margin-top:.5rem; padding:.25rem .5rem; border-radius:999px; background: rgba(0,0,0,0.06); font-weight:600; color:#0f172a; }
+  h2 { margin:0; font-size:1.35rem; }
+  h4 { margin-bottom:.45rem; color: #0f172a; }
+  p { margin:.25rem 0; color: #334155; }
+  .profile-body { margin-top:.75rem; padding:1rem; }
 }

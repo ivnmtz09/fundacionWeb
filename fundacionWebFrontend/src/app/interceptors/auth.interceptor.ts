@@ -6,56 +6,41 @@ import { AuthService } from '../services/auth.service';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
-  // No agregar token a requests de auth
+  // No agregar token a requests de autenticación
   if (isAuthRequest(req.url)) {
     return next(req);
   }
 
-  const token = authService.getAccessToken();
-  
+  const token = authService.getToken();
   if (token) {
     req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+      setHeaders: { Authorization: `Bearer ${token}` }
     });
   }
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Si es un error 401 y tenemos refresh token, intentar renovar
       if (error.status === 401 && !isAuthRequest(req.url)) {
-        const refreshToken = authService.getRefreshToken();
-        
-        if (refreshToken) {
-          return authService.refreshToken().pipe(
-            switchMap((tokenResponse: any) => {
-              // Reintentar la petición original con el nuevo token
-              const newReq = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${tokenResponse.access}`
-                }
-              });
-              return next(newReq);
-            }),
-            catchError((refreshError) => {
-              authService.logout().subscribe();
-              return throwError(() => refreshError);
-            })
-          );
+        // Aquí podrías implementar refresh token si lo soportas
+        const refresh = localStorage.getItem('fw_refresh');
+        if (refresh) {
+          // TODO: implementar endpoint de refresh en tu backend
+          // por ahora, si falla el token, hacemos logout
+          authService.clearAuth();
+          return throwError(() => error);
         } else {
-          authService.logout().subscribe();
+          authService.clearAuth();
+          return throwError(() => error);
         }
       }
-      
       return throwError(() => error);
     })
   );
 };
 
 function isAuthRequest(url: string): boolean {
-  return url.includes('/auth/login/') || 
-         url.includes('/auth/register/') || 
+  return url.includes('/auth/login/') ||
+         url.includes('/auth/register/') ||
          url.includes('/auth/refresh/') ||
          url.includes('/auth/logout/');
 }

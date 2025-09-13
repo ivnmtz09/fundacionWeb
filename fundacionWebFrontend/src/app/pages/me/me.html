@@ -1,25 +1,72 @@
-<div class="me-container" *ngIf="!loading && user; else loadingTpl">
-  <h2>Mi Perfil</h2>
-
-  <div class="profile-card">
+<div class="me-container" *ngIf="user; else loading">
+  <!-- Header con avatar y nombre -->
+  <div class="profile-header">
     <img
-      class="avatar"
-      [src]="user.avatar || 'assets/images/default-avatar.png'"
-      alt="Avatar"
+      [src]="user?.profile?.avatar || 'assets/images/default-avatar.png'"
+      alt="Avatar del usuario"
+      class="profile-avatar"
     />
-
-    <div class="info">
-      <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
-      <p><strong>Usuario:</strong> {{ user.username }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p *ngIf="user.bio"><strong>Biografía:</strong> {{ user.bio }}</p>
-      <p *ngIf="user.interests"><strong>Intereses:</strong> {{ user.interests }}</p>
-
-      <span class="role">{{ user.role || 'Usuario' }}</span>
+    <div class="profile-header-info">
+      <h2>{{ user?.first_name }} {{ user?.last_name }}</h2>
+      <p class="username">@{{ user?.username }}</p>
+      <p class="role" *ngIf="user?.role">
+        Rol: <span>{{ user?.role?.name }}</span>
+      </p>
     </div>
+  </div>
+
+  <!-- Información básica -->
+  <div class="profile-details">
+    <p class="info-item email"><strong>Email:</strong> {{ user?.email }}</p>
+    <p class="info-item date" *ngIf="user?.date_joined">
+      <strong>Miembro desde:</strong>
+      {{ user?.date_joined | date: 'longDate' }}
+    </p>
+    <p class="info-item location" *ngIf="user?.profile?.location">
+      <strong>Ubicación:</strong> {{ user?.profile?.location }}
+    </p>
+    <p class="info-item phone" *ngIf="user?.profile?.phone_number">
+      <strong>Teléfono:</strong> {{ user?.profile?.phone_number }}
+    </p>
+    <p class="info-item address" *ngIf="user?.profile?.address">
+      <strong>Dirección:</strong> {{ user?.profile?.address }}
+    </p>
+  </div>
+
+  <!-- Biografía -->
+  <div class="profile-section bio">
+    <h3>Biografía</h3>
+    <p *ngIf="user?.profile?.bio; else noBio">{{ user?.profile?.bio }}</p>
+    <ng-template #noBio>
+      <p class="empty">El usuario no ha agregado una biografía.</p>
+    </ng-template>
+  </div>
+
+  <!-- Intereses -->
+  <div class="profile-section interests">
+    <h3>Intereses</h3>
+    <p *ngIf="user?.profile?.interests; else noInterests">
+      {{ user?.profile?.interests }}
+    </p>
+    <ng-template #noInterests>
+      <p class="empty">El usuario no ha agregado intereses.</p>
+    </ng-template>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="profile-actions">
+    <button class="btn btn-primary" routerLink="/update-profile">
+      Editar Perfil
+    </button>
+    <button class="btn btn-secondary" (click)="logout()">
+      Cerrar Sesión
+    </button>
   </div>
 </div>
 
-<ng-template #loadingTpl>
-  <div class="loading">Cargando perfil...</div>
+<!-- Pantalla de carga -->
+<ng-template #loading>
+  <div class="loading-state">
+    <p>Cargando perfil...</p>
+  </div>
 </ng-template>

@@ -37,33 +37,17 @@ export class LoginComponent implements OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid && !this.isLoading) {
-      this.isLoading = true;
-      this.errorMessage = '';
-
+    if (this.loginForm.valid) {
       const credentials: LoginRequest = {
         username: this.loginForm.get('username')?.value,
         password: this.loginForm.get('password')?.value
       };
 
-      this.authService.login(credentials)
-        .pipe(takeUntil(this.destroy$))
+      this.authService.login(credentials.username, credentials.password)
         .subscribe({
-          next: (response) => {
-            console.log('Login exitoso:', response);
-            this.router.navigate(['/me']);
-          },
-          error: (error) => {
-            console.error('Error en login:', error);
-            this.errorMessage = error.message;
-            this.isLoading = false;
-          },
-          complete: () => {
-            this.isLoading = false;
-          }
+          next: () => this.router.navigate(['/me']),
+          error: err => this.errorMessage = err.error?.detail || 'Error al iniciar sesión'
         });
-    } else {
-      this.markFormGroupTouched();
     }
   }
 
